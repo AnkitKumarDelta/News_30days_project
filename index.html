@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+    header h1{
+        text-align: center;
+    }
+    .seperator{
+        background-color: black;
+        height:2px;
+        width:70px;
+        text-align: center;
+        margin: 10px auto;
+    }
+main{
+margin: auto;
+width:80%;
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+/* justify-content: center; */
+}
+.content{
+    border: 1px solid lightgray;
+    margin-bottom: 12px;
+    padding: 12px;
+}
+.link{
+    text-decoration: none;
+}
+.form-check{
+    display: flex;
+    justify-content: flex-end;
+}
+.body_mode{
+    background-color: black;
+}
+.i_mode{
+    color:white;
+}
+.p_mode{
+    color:white;
+}
+.title_mode{
+    color:orange;
+}
+.h2_mode{
+    color:crimson;
+}
+.a_mode{
+    color:aquamarine;
+}
+.seperator_mode{
+    background-color: white;
+}
+.div_mode{
+    border: 1px solid gray;
+}
+.li{
+    list-style-type:none;
+    font-weight: 200;
+    font-size: 20px;
+}
+.li_mode{
+    color:rgb(245, 216, 179)
+}
+.btn{
+    outline: none;
+    background-color: rgb(220, 235, 249);
+    border-radius: 5px;
+    border: none;
+}
+.btn_mode{
+    background-color:rgb(192, 254, 254);
+    /* color: white; */
+}
+    </style>
+</head>
+<body>
+    <div class="form-check form-switch">
+        <i class="fa-solid fa-repeat">&nbsp;&nbsp;<span>Mode</span></i>
+      </div>      
+      
+    <header>
+        <h1></h1>
+    </header>
+    <div class="seperator"></div>
+    <main>
+
+    </main>
+    <script>
+        let body = document.querySelector('body');
+        let title = document.querySelector('header h1');
+        let main = document.querySelector('main');
+        let arr = [];
+        let seperator = document.querySelector('.seperator');
+        let mode = document.querySelector('.form-check i ');
+        let url = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ftechcrunch.com%2Ffeed%2F#';
+        
+        async function news(){
+        let res = await fetch(url);
+        let data = await res.json();
+        console.log(data);
+        arr = data.items;
+        console.log(arr);
+        
+        Array.from(arr).forEach((ele)=>{
+            let div = document.createElement('div');
+            let h2 = document.createElement('h2');
+            let p = document.createElement('p');
+            let a = document.createElement('a');
+            let li = document.createElement('li');
+            let btn = document.createElement('button');
+            h2.innerText = ele.title;
+            p.innerText = ele.description;
+            a.innerText = 'Read more';
+            a.href = ele.link;
+            btn.innerText = 'DELETE';
+            li.innerText = '-> ' + ele.author;
+            h2.append(li);
+            div.append(h2);
+            div.append(p);
+            div.append(btn);
+            p.append(a);
+            main.append(div);
+            div.classList.add('content');
+            h2.classList.add('content-h2');
+            p.classList.add('content-p');
+            a.classList.add('link');
+            li.classList.add('li');
+            btn.classList.add('btn');
+             // Add event listener to delete button
+             btn.addEventListener("click", () => {
+                    div.style.display = 'none';
+                });
+        })
+        title.innerHTML = data.feed.title;
+        }
+        news();
+
+        let delbtns = document.querySelectorAll('button');
+        let divs =  document.querySelectorAll('.content');
+        
+        mode.addEventListener("click",()=>{
+            
+             mode.classList.toggle('i_mode');
+            body.classList.toggle('body_mode');
+            title.classList.toggle('title_mode');
+            seperator.classList.toggle('seperator_mode');
+            
+            document.querySelectorAll('p').forEach(p=>{
+                p.classList.toggle('p_mode');
+            });
+            
+            delbtns.forEach(btn=>{
+                btn.classList.toggle('btn_mode');
+            });
+            document.querySelectorAll('li').forEach(li=>{
+                li.classList.toggle('li_mode');
+            });
+           
+           divs.forEach(div=>{
+                div.classList.toggle('div_mode');
+            });
+            document.querySelectorAll('h2').forEach(h2=>{
+                h2.classList.toggle('h2_mode');
+            });
+            document.querySelectorAll('a').forEach(a=>{
+                a.classList.toggle('a_mode');
+            });
+        });
+
+//   delbtns.forEach((btn,index)=>{
+//             btn.addEventListener("click",(index)=>{
+//                 btn.closest('.content').style.visibility='none';
+//             });
+//         });
+
+    </script>
+</body>
+</html>
